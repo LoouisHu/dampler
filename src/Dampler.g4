@@ -2,11 +2,11 @@ grammar Dampler;
 
 program: stat+ EOF;
 
-stat: type ID (ASSIGN expr)? SEMI         #decl
+stat: type ID ASSIGN expr SEMI            #declStat
     | target ASSIGN expr SEMI             #assignStat
     | IF LPAR expr RPAR stat (ELSE stat)? #ifStat
     | WHILE LPAR expr RPAR stat           #whileStat
-    | LCURLY stat* RCURLY                 #blockStat
+    | LCURLY stat* RCURLY                     #blockStat
     | PRINT LPAR STRING (COMMA ID)* RPAR SEMI #printStat
     | BREAK SEMI                          #breakStat
     | CONTINUE SEMI                       #contStat
