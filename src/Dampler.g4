@@ -3,10 +3,14 @@ grammar Dampler;
 program: stat+ EOF;
 
 stat: type ID (ASSIGN expr)? SEMI           #decl
+	| type SHARED ID (ASSIGN expr)? SEMI 	#sharedDeclStat
     | target ASSIGN expr SEMI               #assignStat
     | IF LPAR expr RPAR block (ELSE block)? #ifStat
     | WHILE LPAR expr RPAR block            #whileStat
     | block                                 #blockStat
+    | FORK ID block							#forkStat
+    | ID DOT JOIN							#joinStat
+    | SYNC block							#syncStat
 //    | PRINT LPAR STRING (COMMA ID)* RPAR SEMI #printStat
 //    | BREAK SEMI                          #breakStat
 //    | CONTINUE SEMI                       #contStat
@@ -57,11 +61,15 @@ RPAR: ')';
 //PRINT: 'printf';
 BOOL: 'boolean';
 INT: 'int';
-WHILE: 'while';
+WHILE: 'repeat';
 IF: 'if';
 ELSE: 'else';
 TRUE: 'true';
-FALSE: 'false';
+SHARED: 'shrd';
+FALSE: 'untrue';
+FORK: 'fork';
+JOIN: 'join';
+SYNC: 'sync';
 //BREAK: 'break';
 //CONTINUE: 'continue';
 
