@@ -1,17 +1,19 @@
 grammar Dampler;
 
-
 program: stat+ EOF;
 
-stat: type ID (ASSIGN expr)? SEMI         #decl
-    | target ASSIGN expr SEMI             #assignStat
-    | IF LPAR expr RPAR stat (ELSE stat)? #ifStat
-    | WHILE LPAR expr RPAR stat           #whileStat
-    | LCURLY stat* RCURLY                 #blockStat
+stat: type ID (ASSIGN expr)? SEMI           #decl
+    | target ASSIGN expr SEMI               #assignStat
+    | IF LPAR expr RPAR block (ELSE block)? #ifStat
+    | WHILE LPAR expr RPAR block            #whileStat
+    | block                                 #blockStat
 //    | PRINT LPAR STRING (COMMA ID)* RPAR SEMI #printStat
 //    | BREAK SEMI                          #breakStat
 //    | CONTINUE SEMI                       #contStat
     ;
+
+block
+    : LCURLY stat* RCURLY;
 
 target
     : ID                            #idTarget
@@ -19,6 +21,7 @@ target
 
 expr: expr DOT ID                   #fieldExpr
     | NOT expr                      #notExpr
+    | MINUS expr                    #unMinExpr
     | expr PLUS expr                #addExpr
     | expr MINUS expr               #minExpr
     | expr MULT expr                #multExpr
